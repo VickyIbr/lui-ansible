@@ -3,6 +3,8 @@
   hosts: target_hosts
   become: yes
   gather_facts: yes
+  vars:
+    ansible_become_flags: "-n"
 
   roles:
     - common
