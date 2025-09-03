@@ -1,0 +1,16 @@
+---
+- name: Install odoo
+  hosts: odoo_servers
+  become: yes
+  gather_facts: yes
+
+  roles:
+    - common
+    - postgersql
+    - odoo
+    - role: nginx
+      when: install_nginx | bool
+    - role: odoo_database
+      when: create_database | bool
+    - role: deploy_scripts
+      when: deploy_scripts | bool

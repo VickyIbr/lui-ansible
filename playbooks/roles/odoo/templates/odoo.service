@@ -1,8 +1,0 @@
-[Unit]
-Description=Odoo {{ odoo_version }}
-[Service]
-Type=simple
-User={{ odoo_user }}
-ExecStart={{ odoo_dir }}/venv/bin/python3 {{ odoo_dir }}/odoo-bin -c /etc/odoo-{{ odoo_version }}.conf
-[Install]
-WantedBy=multi-user.target

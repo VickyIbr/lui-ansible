@@ -1,0 +1,20 @@
+---
+- name: Create Database Backup Bash Script Cronjob
+  cron:
+    name: Daily Database Backup
+    job: "{{ odoo_home_path }}/scripts/database_backup.sh"
+    minute: 0
+    hour: 3
+    user: root
+    state: present
+
+- name: Reload systemd daemon
+  systemd:
+    daemon_reload: yes
+
+
+- name: Start Odoo Monitor Service
+  systemd:
+    name: odoo-monitor
+    state: restarted 
+    enabled: yes
