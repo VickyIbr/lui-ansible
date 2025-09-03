@@ -1,35 +1,22 @@
 ---
 - name: Update package lists
-  become: yes
   apt:
     update_cache: yes
 
 - name: Upgrade packages
-  become: yes
   apt:
     upgrade: dist
 
 - name: Autoremove unused packages
-  become: yes
   apt:
     autoremove: yes
     purge: yes
 
 - name: Clean up APT Cache
-  become: yes
   apt:
     autoclean: yes
 
-- name: Add or update a repository in sources.list.d
-  become: yes
-  apt_repository:
-    repo: "deb http://security.ubuntu.com/ubuntu focal-security main"
-    state: present
-    filename: libssl1.1
-    update_cache: yes
-
 - name: Install common dependencies
-  become: yes
   apt:
     name:
       - python3-pip
