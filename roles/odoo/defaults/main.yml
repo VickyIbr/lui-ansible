@@ -1,0 +1,6 @@
+odoo_version: "18.0"
+addons_file: ""
+enterprise_addons_file: ""
+addons_repo_url: ""
+addons_repo_branch: "main"
+odoo_core_file: ""

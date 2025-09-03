@@ -1,0 +1,8 @@
+- hosts: target_hosts
+  become: true
+  vars:
+    odoo_dir: "{{ odoo_home }}/odoo"
+    custom_addons_dir: "{{ odoo_home }}/custom"
+    enterprise_addons_dir: "{{ odoo_home }}/enterprise"
+  roles:
+    - odoo
