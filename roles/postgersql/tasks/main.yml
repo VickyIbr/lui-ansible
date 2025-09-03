@@ -9,9 +9,9 @@
 - name: Create PostgreSQL User
   become: yes
   become_user: postgres
+  vars:
+    ansible_become_flags: "-n"
   postgresql_user:
     name: "{{ postgres_user }}"
     password: "{{ postgres_password }}"
     role_attr_flags: CREATEDB,NOSUPERUSER
-
-
