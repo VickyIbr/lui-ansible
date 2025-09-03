@@ -1,0 +1,55 @@
+- hosts: odoo_hosts
+  become: true
+  vars_files:
+    - ../group_vars/all.yml
+
+  tasks:
+    - name: Set host-specific variables
+      set_fact:
+        host_config: "{{ hosts_config[inventory_hostname] }}"
+        temp_backup_dir: "{{ hosts_config[inventory_hostname].odoo_bin_path | dirname }}/temp-backup"
+
+    - name: Ensure backup directory exists on control node
+      file:
+        path: "{{ backup_dir }}/{{ inventory_hostname }}"
+        state: directory
+        mode: "0755"
+
+    - name: Ensure temporary backup directory exists on remote host
+      file:
+        path: "{{ temp_backup_dir }}"
+        state: directory
+        mode: "0755"
+        owner: "{{ host_config.odoo_user }}"
+        group: "{{ host_config.odoo_user }}"
+
+    - name: Backup Odoo databases via odoo-bin db dump
+      shell: |
+        sudo -u {{ host_config.odoo_user }} \
+        {{ host_config.odoo_venv_path }}/bin/python \
+        {{ host_config.odoo_bin_path }} db -c {{ host_config.odoo_conf_path }} dump {{ item }} {{ temp_backup_dir }}/{{ item }}.zip
+      loop: "{{ host_config.odoo_db_list }}"
+      args:
+        executable: /bin/bash
+      register: db_backup_results
+      ignore_errors: yes
+
+    - name: Show backup results
+      debug:
+        var: db_backup_results.results
+
+    - name: Fetch database dump ZIPs to control node
+      fetch:
+        src: "{{ temp_backup_dir }}/{{ item }}.zip"
+        dest: "{{ backup_dir }}/{{ inventory_hostname }}/"
+        flat: yes
+      loop: "{{ host_config.odoo_db_list }}"
+
+    - name: Clean remote temporary files
+      file:
+        path: "{{ temp_backup_dir }}"
+        state: absent
+
+    - name: Notify success
+      debug:
+        msg: "Odoo backup for {{ inventory_hostname }} completed successfully and stored at {{ backup_dir }}/{{ inventory_hostname }}/"
