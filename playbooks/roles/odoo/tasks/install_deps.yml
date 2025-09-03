@@ -19,6 +19,7 @@
       - libffi-dev
       - libjpeg-dev
       - libpq-dev
+      - nodejs
       - npm
       - node-less
     state: present
