@@ -1,6 +1,6 @@
 ---
 - name: Install odoo
-  hosts: odoo_servers
+  hosts: target_hosts
   become: yes
   gather_facts: yes
 
