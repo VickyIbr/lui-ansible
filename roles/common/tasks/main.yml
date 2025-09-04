@@ -54,6 +54,19 @@
   notify:
     - apt_clean
 
+- name: Install build deps for cryptography
+  apt:
+    name:
+      - build-essential
+      - libssl-dev
+      - libffi-dev
+      - python3-dev
+      - cargo
+      - rustc
+      - pkg-config
+    state: present
+    update_cache: yes
+
 - meta: flush_handlers
 
 - name: Get Python version
