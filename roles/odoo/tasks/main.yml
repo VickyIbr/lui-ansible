@@ -150,16 +150,28 @@
 
 - meta: flush_handlers
 
+- name: Detect architecture
+  command: dpkg --print-architecture
+  register: system_arch
+  changed_when: false
+
 - name: Download wkhtmltopdf binary
   get_url:
-    url: "https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb"
-    dest: "/tmp/wkhtmltox_0.12.5-1.bionic_amd64.deb"
-  when: install_wkhtmltopdf | bool
+    url: >-
+      {{
+        system_arch.stdout == "amd64"
+        | ternary(
+            "https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb",
+            "https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_arm64.deb"
+          )
+      }}
+    dest: /tmp/wkhtmltox.deb
+    mode: "0644"
 
 - name: Install wkhtmltopdf DEB package
   apt:
-    deb: "/tmp/wkhtmltox_0.12.5-1.bionic_amd64.deb"
-  when: install_wkhtmltopdf | bool
+    deb: /tmp/wkhtmltox.deb
+    state: present
 
 - name: Remove downloaded DEB package
   file:
