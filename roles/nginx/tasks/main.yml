@@ -1,7 +1,7 @@
 ---
 - name: Install Nginx & Certbot
   apt:
-    name: 
+    name:
       - nginx
       - certbot
       - python3-certbot-nginx
@@ -24,7 +24,7 @@
     --agree-tos
     --email {{ certbot_email }}
     -d {{ odoo_url }}
-  when: not cert_exists.stat.exists and install_ssl | bool
+  when: install_ssl | bool and not (cert_exists.stat.exists | default(false))
   notify:
     - Start Nginx
 
