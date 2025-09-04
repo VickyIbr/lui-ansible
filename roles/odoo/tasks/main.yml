@@ -75,8 +75,6 @@
       - pip
       - setuptools
       - wheel
-      - gevent
-      - greenlet
       - six
     state: latest
     virtualenv: "{{ odoo_home_path }}/odoo-venv"
