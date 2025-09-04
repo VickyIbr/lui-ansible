@@ -16,7 +16,7 @@
   apt:
     autoclean: yes
 
-- name: Install common dependencies
+- name: Install Odoo system dependencies
   apt:
     name:
       - acl
@@ -39,14 +39,18 @@
       - zlib1g-dev
       - liblcms2-dev
       - libxml2-dev
-      - libxslt1-dev
       - libjpeg8-dev
       - libpq-dev
       - libffi-dev
       - nodejs
       - npm
-      - libssl1.1
+      # Opsional / tambahan
+      - libblas-dev
+      - libatlas-base-dev
+      # Untuk Ubuntu 20.04 (deprecated di 22.04+)
+      - "{{ 'libssl1.1' if ansible_distribution_version is version('22.04', '<') else 'libssl3' }}"
     state: present
+    update_cache: yes
   notify:
     - apt_clean
 
