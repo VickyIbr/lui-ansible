@@ -117,3 +117,34 @@
 
 # # odoo_monitor_script: Deploy odoo monitor and self-healing script
 # odoo_monitor_script: true
+
+
+
+
+
+
+odoo_user: "odoo{{ odoo_version }}"
+
+odoo_port: 8069
+
+longpolling_port: 8072
+
+postgres_host: localhost
+
+postgres_port: 5432
+
+postgres_user: odoo{{ odoo_version }}
+
+postgres_password: odoo
+
+odoo_master_password: ""
+
+create_database: false
+
+install_wkhtmltopdf: yes
+
+install_nginx: true
+
+deploy_scripts: true
+
+ANSIBLE_HOST_KEY_CHECKING : False
