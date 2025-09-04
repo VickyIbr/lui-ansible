@@ -13,19 +13,13 @@
     purge: yes
 
 - name: Clean up APT Cache
-  apt: 
+  apt:
     autoclean: yes
-  
-- name: Add or update a repository in sources.list.d
-  apt_repository:
-    repo: "deb http://security.ubuntu.com/ubuntu focal-security main"
-    state: present
-    filename: libssl1.1
-    update_cache: yes
-  
+
 - name: Install common dependencies
   apt:
     name:
+      - acl
       - python3-pip
       - python3-dev
       - python3-wheel
