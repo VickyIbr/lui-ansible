@@ -55,10 +55,10 @@
 
 - name: Ensure Odoo directory exists
   file:
-    path: { { odoo_home_path } }
+    path: "{{ odoo_home_path }}"
     state: directory
-    owner: { { odoo_user } }
-    group: { { odoo_user } }
+    owner: "{{ odoo_user }}"
+    group: "{{ odoo_user }}"
     mode: "0755"
 
 - name: Create Odoo virtual environment
