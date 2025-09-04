@@ -158,20 +158,28 @@
 - name: Download wkhtmltopdf binary
   get_url:
     url: >-
-      {{
-        system_arch.stdout == "amd64"
-        | ternary(
-            "https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb",
-            "https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_arm64.deb"
-          )
-      }}
+      {% if system_arch.stdout == "amd64" %}
+      https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
+      {% elif system_arch.stdout == "arm64" %}
+      https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_arm64.deb
+      {% else %}
+      {{ '' }}
+      {% endif %}
     dest: /tmp/wkhtmltox.deb
     mode: "0644"
+  when: system_arch.stdout in ["amd64", "arm64"]
 
 - name: Install wkhtmltopdf DEB package
   apt:
     deb: /tmp/wkhtmltox.deb
     state: present
+  when: system_arch.stdout in ["amd64", "arm64"]
+
+- name: Install wkhtmltopdf from apt if not amd64/arm64
+  apt:
+    name: wkhtmltopdf
+    state: present
+  when: system_arch.stdout not in ["amd64", "arm64"]
 
 - name: Remove downloaded DEB package
   file:
