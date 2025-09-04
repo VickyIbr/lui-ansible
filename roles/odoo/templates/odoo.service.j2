@@ -9,7 +9,7 @@ SyslogIdentifier={{ odoo_user }}
 PermissionsStartOnly=true
 User={{ odoo_user }}
 Group={{ odoo_user }}
-ExecStart={{ odoo_home_path }}/{{ odoo_user }}/odoo-venv/bin/python3 {{ odoo_home_path }}/{{ odoo_user }}/odoo/odoo-bin -c /etc/{{ odoo_user}}.conf
+ExecStart=/opt/{{ odoo_user }}/odoo-venv/bin/python3 /opt/{{ odoo_user }}/odoo/odoo-bin -c /etc/{{ odoo_user}}.conf
 StandardOutput=journal+console
 
 [Install]
