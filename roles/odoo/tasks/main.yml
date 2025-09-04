@@ -27,7 +27,7 @@
     dest: "{{ odoo_home_path }}/odoo"
     depth: 1
     force: yes
-  become: yes
+  become: true
   become_user: "{{ odoo_user }}"
 
 - name: Clone Odoo Enterprise
@@ -37,7 +37,7 @@
     dest: "{{ odoo_home_path }}/enterprise"
     depth: 1
   ignore_errors: yes
-  become: yes
+  become: true
   become_user: "{{ odoo_user }}"
   when: odoo_install_type == 'enterprise'
 
@@ -53,11 +53,19 @@
     regexp: '^greenlet.*\n?'
     replace: ""
 
+- name: Ensure Odoo directory exists
+  file:
+    path: /opt/{{ odoo_user }}
+    state: directory
+    owner: odoo
+    group: odoo
+    mode: "0755"
+
 - name: Create Odoo virtual environment
   command: python3 -m venv /opt/{{ odoo_user }}/odoo-venv
   args:
     creates: "/opt/{{ odoo_user }}/odoo-venv"
-  become: yes
+  become: true
   become_user: "{{ odoo_user }}"
 
 - name: Upgrade pip in virtual environment
@@ -71,7 +79,7 @@
       - six
     state: latest
     virtualenv: "{{ odoo_home_path }}/odoo-venv"
-  become: yes
+  become: true
   become_user: "{{ odoo_user }}"
 
 - name: Install odoo requirements
@@ -79,7 +87,7 @@
     requirements: "{{ odoo_home_path }}/odoo/requirements.txt"
     state: present
     virtualenv: "{{ odoo_home_path }}/odoo-venv"
-  become: yes
+  become: true
   become_user: "{{ odoo_user }}"
   retries: 3
   delay: 10
@@ -91,7 +99,7 @@
     name: gevent
     virtualenv: "{{ odoo_home_path }}/odoo-venv"
     state: present
-  become: yes
+  become: true
   become_user: "{{ odoo_user }}"
 
 - name: Create odoo custom addons
@@ -101,7 +109,7 @@
     owner: "{{ odoo_user }}"
     group: "{{ odoo_user }}"
     mode: 0755
-  become: yes
+  become: true
   become_user: "{{ odoo_user }}"
 
 - name: Create odoo config file

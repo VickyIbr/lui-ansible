@@ -57,7 +57,7 @@
   register: python_version
 
 - name: Install matching python venv package
-  become: yes
+  become: true
   apt:
     name: "python{{ python_version.stdout.split('.')[0] }}.{{ python_version.stdout.split('.')[1] }}-venv"
     state: present
