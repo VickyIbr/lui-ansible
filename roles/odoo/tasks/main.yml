@@ -93,31 +93,31 @@
   register: pip_result
   until: pip_result is succeeded
 
-- name: Get Ubuntu version
-  command: lsb_release -sr
-  register: ubuntu_version
-  changed_when: false
+# - name: Get Ubuntu version
+#   command: lsb_release -sr
+#   register: ubuntu_version
+#   changed_when: false
 
-- name: Install Odoo Python dependencies (auto match Ubuntu version)
-  pip:
-    name: >-
-      {{
-        (
-          ubuntu_version.stdout is search("20.04")
-          | ternary(
-              ["gevent==20.12.1", "greenlet==1.1.3", "cryptography==3.4.8", "pyopenssl==22.0.0"],
-              ubuntu_version.stdout is search("22.04")
-              | ternary(
-                  ["gevent==22.10.2", "greenlet==2.0.2", "cryptography==38.0.4", "pyopenssl==23.2.0"],
-                  ["gevent==24.2.1", "greenlet==3.0.3", "cryptography==42.0.5", "pyopenssl==24.2.1"]
-                )
-            )
-        )
-      }}
-    virtualenv: "{{ odoo_home_path }}/odoo-venv"
-  vars:
-    odoo_version: "{{ odoo_version }}"
-  register: pip_result
+# - name: Install Odoo Python dependencies (auto match Ubuntu version)
+#   pip:
+#     name: >-
+#       {{
+#         (
+#           ubuntu_version.stdout is search("20.04")
+#           | ternary(
+#               ["gevent==20.12.1", "greenlet==1.1.3", "cryptography==3.4.8", "pyopenssl==22.0.0"],
+#               ubuntu_version.stdout is search("22.04")
+#               | ternary(
+#                   ["gevent==22.10.2", "greenlet==2.0.2", "cryptography==38.0.4", "pyopenssl==23.2.0"],
+#                   ["gevent==24.2.1", "greenlet==3.0.3", "cryptography==42.0.5", "pyopenssl==24.2.1"]
+#                 )
+#             )
+#         )
+#       }}
+#     virtualenv: "{{ odoo_home_path }}/odoo-venv"
+#   vars:
+#     odoo_version: "{{ odoo_version }}"
+#   register: pip_result
 
 - name: Create odoo custom addons
   file:
