@@ -88,7 +88,7 @@ install_wkhtmltopdf: true
 # Nginx Configuration
 # =============================================================================
 # install_nginx: Whether to install and configure Nginx as a reverse proxy
-install_nginx: true
+install_nginx: false
 
 # odoo_url: The domain name that will be used to access Odoo like odoo.example.com
 odoo_url: ""
