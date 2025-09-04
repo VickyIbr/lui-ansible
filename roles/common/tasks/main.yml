@@ -19,6 +19,7 @@
 - name: Install common dependencies
   apt:
     name:
+      - acl
       - python3-pip
       - python3-dev
       - python3-wheel
