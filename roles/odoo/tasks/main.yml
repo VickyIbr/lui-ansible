@@ -62,9 +62,9 @@
     mode: "0755"
 
 - name: Create Odoo virtual environment
-  command: python3 -m venv /opt/{{ odoo_home_path }}/odoo-venv
+  command: python3 -m venv {{ odoo_home_path }}/odoo-venv
   args:
-    creates: "/opt/{{ odoo_home_path }}/odoo-venv"
+    creates: "{{ odoo_home_path }}/odoo-venv"
   become: true
   become_user: "{{ odoo_user }}"
 
